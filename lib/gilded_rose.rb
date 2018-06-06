@@ -11,7 +11,7 @@ class GildedRose
     if @name != "Aged Brie" and @name != "Backstage passes to a TAFKAL80ETC concert"
       if @quality > 0
         if @name != "Sulfuras, Hand of Ragnaros"
-          @quality = @quality - 1
+          @quality = (@name == 'Conjured Mana Cake') ? @quality - 2 : @quality - 1
         end
       end
     else
@@ -31,15 +31,17 @@ class GildedRose
         end
       end
     end
+
     if @name != "Sulfuras, Hand of Ragnaros"
       @days_remaining = @days_remaining - 1
     end
+
     if @days_remaining < 0
       if @name != "Aged Brie"
         if @name != "Backstage passes to a TAFKAL80ETC concert"
           if @quality > 0
             if @name != "Sulfuras, Hand of Ragnaros"
-              @quality = @quality - 1
+              @quality = (@name == 'Conjured Mana Cake') ? @quality - 2 : @quality - 1
             end
           end
         else
