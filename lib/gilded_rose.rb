@@ -18,7 +18,8 @@ class GildedRose
   def tick
     case @name
     when "Normal Item"
-
+      @quality = compute_quality(-1, @days_remaining)
+      @days_remaining = @days_remaining - 1
     when "Aged Brie"
       @quality = compute_quality(+1, @days_remaining)
       @days_remaining = @days_remaining - 1
