@@ -22,7 +22,10 @@ class GildedRose
       @quality = compute_quality(+1, @days_remaining)
       @days_remaining = @days_remaining - 1
     when "Sulfuras, Hand of Ragnaros"
+      # nothin' needs to happen
     when "Backstage passes to a TAFKAL80ETC concert"
+      @quality = compute_quality(+1, @days_remaining)
+      @days_remaining = @days_remaining - 1
     when "Conjured Mana Cake"
     else
       "We don't sell that!"
@@ -30,16 +33,24 @@ class GildedRose
   end
 
   def compute_quality(quality_calculation, days_remaining)
-    if (@quality > 0 && @quality <= 50) || @name != "Sulfuras, Hand of Ragnaros"
+    if (@quality > 0 && @quality <= 50) && @name != "Backstage passes to a TAFKAL80ETC concert"
       quality_calculation = days_remaining <= 0 ? quality_calculation * 2 : quality_calculation
       @quality = @quality + quality_calculation
-      @quality = @quality >= 50 ? 50 : @quality
     else
       # I took the feedback from the pairing session, and I'm not going to worry about an alert
       # if things are less than 0. IRL I'd want to know how to handle edge cases (logging, error, etc.)
       # but it's a good call not to worry about that for now.
-      @quality = @quality
+      return @quality = 0 if days_remaining <= 0
+      quality_calculation = if (days_remaining >= 11)
+                              quality_calculation * 1
+                            elsif (days_remaining <= 10 && days_remaining >= 6)
+                              quality_calculation * 2
+                            else
+                              quality_calculation * 3
+                            end
+      @quality = @quality + quality_calculation
     end
+    @quality = @quality >= 50 ? 50 : @quality
   end
 
 
