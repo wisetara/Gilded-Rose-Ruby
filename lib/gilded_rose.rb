@@ -18,24 +18,27 @@ class GildedRose
   def tick
     case @name
     when "Normal Item"
+
     when "Aged Brie"
       @quality = compute_quality(+1, @days_remaining)
       @days_remaining = @days_remaining - 1
-    when "Sulfuras, Hand of Ragnaros"
-      # nothin' needs to happen
     when "Backstage passes to a TAFKAL80ETC concert"
       @quality = compute_quality(+1, @days_remaining)
       @days_remaining = @days_remaining - 1
     when "Conjured Mana Cake"
+      @days_remaining = @days_remaining - 1
+      @quality = compute_quality(-2, @days_remaining)
     else
-      "We don't sell that!"
+      @quality_calculation
+      @days_remaining
     end
   end
 
   def compute_quality(quality_calculation, days_remaining)
-    if (@quality > 0 && @quality <= 50) && @name != "Backstage passes to a TAFKAL80ETC concert"
+    if (@quality >= 0 && @quality <= 50) && @name != "Backstage passes to a TAFKAL80ETC concert"
       quality_calculation = days_remaining <= 0 ? quality_calculation * 2 : quality_calculation
       @quality = @quality + quality_calculation
+      @quality = 0 if @quality <= 0
     else
       # I took the feedback from the pairing session, and I'm not going to worry about an alert
       # if things are less than 0. IRL I'd want to know how to handle edge cases (logging, error, etc.)
